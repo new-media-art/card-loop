@@ -1,6 +1,10 @@
 <template>
 <div class="x"> 
-
+<v-img
+          
+          src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
+        >
+   
 
   <v-card
     max-width="1200"
@@ -11,7 +15,6 @@
           
           src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
         >
-   
 
     <v-container>
       <v-row dense>
@@ -148,7 +151,10 @@
     </v-container>
      </v-img>
   </v-card>
+</v-img>
+
   </div>
+
 </template>
       
 
@@ -226,7 +232,7 @@
           },
           {
             name: 'Budapest',
-            temperature: 21,
+            temperature: 19,
             icon: '01d.png',
             
           },
