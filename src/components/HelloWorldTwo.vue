@@ -1,16 +1,30 @@
 <template>
-  
-<div>
-
-
-  
-
+<div class="x"> 
+<v-img
           
+          src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
+        >
+   
+
+  <v-card
+    max-width="1200"
+    class="mx-auto"
+  >
+   
+<v-img
+          
+          src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
+        >
+
+    <v-container>
+      <v-row dense>
+        <v-col cols="12">
 
 
 
-<v-card
-       
+         <v-card
+       class="mx-auto my-12  pa-6"
+      max-width="374"
         
        
       >
@@ -18,6 +32,7 @@
             <v-radio-group
               v-model="ex7"
               column
+              
               
             >
               <v-radio
@@ -54,17 +69,9 @@
               ></v-radio>
              
             </v-radio-group>
-            
-            </v-card>
 
-            <!--Date picker-->
-            <v-card
-               
-            >
 
-            
-
-            <v-menu
+              <v-menu
                   v-model="menu1"
                   :close-on-content-click="false"
                   max-width="290"
@@ -86,23 +93,44 @@
           ></v-date-picker>
         </v-menu>  
 
+          <div class="text-center">
+              <v-btn
+                rounded
+                color="primary"
+                dark
+              >
+                Search flights
+              </v-btn>
+            </div>
             
-          </v-card>
-
-
-
-
-
-
+            </v-card>
        
- <v-card
-              
-                    >
+      
+       
+       
+        </v-col>
 
-           <v-data-table
+        <v-col
+          
+          cols="12"
+        >
+        
+         
+
+
+        </v-col>
+      
+       <v-col
+          
+          cols="12"
+        >
+
+
+
+     <v-data-table
               :headers="headers"
               :items="destinationsList"
-              class="elevation-1"
+              class="elevation-2 pa-12"
             >
               <template v-slot:[`item.temperature`]="{ item }">
                 <v-chip
@@ -111,13 +139,23 @@
                 >
               {{ item.temperature }}
       </v-chip>
+      
     </template>
+   
   </v-data-table>
- 
-        </v-card>
 
-</div>
+        
 
+        </v-col>
+      
+      </v-row>
+       <button v-on:click="doThis">ddd</button>
+    </v-container>
+     </v-img>
+  </v-card>
+</v-img>
+
+  </div>
 
 </template>
       
@@ -141,8 +179,10 @@
             sortable: false,
             value: 'name',
           },
-          { text: 'Temperature', value: 'temperature' },
+          { text: 'Temperature C°', value: 'temperature' },
           { text: 'Weather icon', value: 'icon' },
+          { text: 'See details', value: 'see details' },
+           
           
         ],
         destinationsList: [
@@ -150,6 +190,7 @@
             name: 'Lisboa',
             temperature: 40,
             icon: '01d.png',
+            details: 'see details'
             
           },
           {
@@ -196,7 +237,7 @@
           },
           {
             name: 'Budapest',
-            temperature: 21,
+            temperature: 19,
             icon: '01d.png',
             
           },
@@ -212,9 +253,9 @@
     ,
     methods: {
       getColor (temperature) {
-        if (temperature > 35) return 'red'
-        else if (temperature > 20) return 'orange'
-        else return 'green'
+        if (temperature > 35) return 'dark orange'
+        else if (temperature > 20) return 'yellow'
+        else return 'blue'
       }
     },
        computed: {
@@ -229,3 +270,9 @@
   
 
 </script>
+
+<style>
+  .x {
+    background-color: black;
+  }
+</style>

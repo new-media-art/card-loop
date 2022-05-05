@@ -1,273 +1,319 @@
 <template>
-<div class="x"> 
-<v-img
-          
-          src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
-        >
-   
-
-  <v-card
-    max-width="1200"
-    class="mx-auto"
+  <v-data-table
+    :headers="headers"
+    :items="flightDestinations"
+    sort-by="temperature"
+    class="elevation-1"
   >
-   
-<v-img
-          
-          src="https://cdn.pixabay.com/photo/2020/07/12/07/47/bee-5396362_1280.jpg"
-        >
-
-    <v-container>
-      <v-row dense>
-        <v-col cols="12">
+    <template v-slot:top>
 
 
 
-         <v-card
-       class="mx-auto my-12  pa-6"
-      max-width="374"
-        
-       
+
+      <v-toolbar
+        flat
       >
-            
-            <v-radio-group
-              v-model="ex7"
-              column
+        <v-toolbar-title>Destinations</v-toolbar-title>
+        <v-divider
+          class="mx-4"
+          inset
+          vertical
+        ></v-divider>
+        <v-spacer></v-spacer>
+
+
+        <v-dialog
+          v-model="dialog"
+          max-width="500px"
+        >
+
+        <!--
+          <template v-slot:activator="{ on, attrs }">
+
               
-              
+            <v-btn
+              color="primary"
+              dark
+              class="mb-2"
+              v-bind="attrs"
+              v-on="on"
             >
-              <v-radio
-                label="very hot"
-                color="red"
-                value="red"
-              ></v-radio>
-              <v-radio
-                label="hot"
-                color="red darken-3"
-                value="red darken-3"
-              ></v-radio>
-                <v-radio
-                label="warm"
-                color="orange darken-3"
-                value="orange darken-3"
-              ></v-radio>
-               
-               <v-radio
-                label="chilly"
-                color="orange"
-                value="orange"
-              ></v-radio>
-             
-              <v-radio
-                label="cold"
-                color="indigo"
-                value="indigo"
-              ></v-radio>
-              <v-radio
-                label="very cold"
-                color="indigo darken-3"
-                value="indigo darken-3"
-              ></v-radio>
-             
-            </v-radio-group>
+              New Item
+            </v-btn>
+            
+          </template>
+            -->
 
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">Selected destination</span>
+            </v-card-title>
 
-              <v-menu
-                  v-model="menu1"
-                  :close-on-content-click="false"
-                  max-width="290"
-                >
-                <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
-                    :value="computedDateFormattedMomentjs"
-                    clearable
-                    label="Formatted with Moment.js"
-                    readonly
-                    v-bind="attrs"
-                    v-on="on"
-                    @click:clear="date = null"
-                  ></v-text-field>
-              </template>
-          <v-date-picker
-            v-model="date"
-            @change="menu1 = false"
-          ></v-date-picker>
-        </v-menu>  
+            <v-card-text>
+              <v-container>
+                <v-row>
 
-          <div class="text-center">
+                  <v-col
+                    cols="6"
+                  >
+                    <div>Destination: {{ selectedItem.name }}</div>
+                    
+                  </v-col>
+                
+                  
+                  <v-col
+                    cols="6"
+                    
+                  >
+                    <div>Temperature: {{ selectedItem.temperature }}  C°</div>
+                  </v-col>
+                
+                 <v-col
+                    cols="6"
+                    
+                  >
+                    <div>Price: {{ selectedItem.price }}  €</div>
+                  </v-col>
+
+                     <v-col
+                    cols="4"
+                    
+                  >
+                 
+                    <v-icon
+                        large
+                        color="green darken-2"
+                        >
+                        mdi-weather-lightning
+                        </v-icon>
+                  </v-col>
+                 </v-row>
+                  
+                
+                 
+                
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
               <v-btn
-                rounded
-                color="primary"
-                dark
+                color="blue darken-1"
+                text
+                @click="close"
               >
-                Search flights
+                Cancel
               </v-btn>
-            </div>
-            
-            </v-card>
-       
+              <v-btn
+                color="blue darken-1"
+                text
+                @click="select"
+              >
+                Select
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       
-       
-       
-        </v-col>
-
-        <v-col
-          
-          cols="12"
-        >
-        
-         
-
-
-        </v-col>
-      
-       <v-col
-          
-          cols="12"
-        >
+      </v-toolbar>
 
 
 
-     <v-data-table
-              :headers="headers"
-              :items="destinationsList"
-              class="elevation-2 pa-12"
-            >
-              <template v-slot:[`item.temperature`]="{ item }">
-                <v-chip
-                  :color="getColor(item.temperature)"
-                  dark
+
+    </template>
+    <template v-slot:[`item.actions`]="{ item }">
+
+        <v-btn
+        @click="selectItem(item)"
+        color="white"
+        small
+        > Select 
+
+            <v-icon
+                small
+                class="mr-2"
+                color="blue"
                 >
-              {{ item.temperature }}
-      </v-chip>
+                mdi-arrow-right-thick
+            </v-icon>
+        </v-btn>
+
+      
+
+
+    
+    
+    </template>
+    <template v-slot:no-data>
+      <v-btn
+        color="primary"
+        @click="initialize"
+      >
+        Reset
+      </v-btn>
     </template>
   </v-data-table>
-
-        
-
-        </v-col>
-      
-      </v-row>
-      
-    </v-container>
-     </v-img>
-  </v-card>
-</v-img>
-
-  </div>
-
 </template>
-      
-
 
 <script>
-   import moment from 'moment'
-  import { format, parseISO } from 'date-fns'
   export default {
-    data () {
-      return {
-        ex7: 'red',
-        date: format(parseISO(new Date().toISOString()), 'yyyy-MM-dd'),
-        menu1: false,
-        menu2: false,
-        
-        headers: [
-          {
+    data: () => ({
+      dialog: false,
+      dialogDelete: false,
+      headers: [
+        {
             text: 'Destinations',
             align: 'start',
             sortable: false,
             value: 'name',
-          },
-          { text: 'Temperature C°', value: 'temperature' },
+        },
+         { text: 'Temperature C°', value: 'temperature' },
           { text: 'Weather icon', value: 'icon' },
-          
-        ],
-        destinationsList: [
+           {text: 'price €', value: 'price' },
+         { text: 'Actions', value: 'actions', sortable: false },
+      ],
+      flightDestinations: [],
+      editedIndex: -1,
+      selectedItem: {
+        name: '',
+        temperature: 0,
+        price: 0,
+        
+      },
+      defaultItem: {
+        name: '',
+        temperature: 0,
+        price: 0,
+        
+      },
+    }),
+
+   
+
+    watch: {
+      dialog (val) {
+        val || this.close()
+      },
+      dialogDelete (val) {
+        val || this.closeDelete()
+      },
+    },
+
+    created () {
+      this.initialize()
+    },
+
+    methods: {
+      initialize () {
+        this.flightDestinations = [
           {
             name: 'Lisboa',
             temperature: 40,
             icon: '01d.png',
+            price: 65.99,
+            
             
           },
           {
             name: 'Amsterdam',
             temperature: 39,
             icon:'01d.png',
+            price: 48.99,
             
           },
           {
             name: 'London',
             temperature: 37,
             icon: '01d.png',
+            price: 33.99,
             
           },
           {
             name: 'Milan',
             temperature: 36,
             icon: '01d.png',
+            price: 52.99,
             
           },
           {
             name: 'Zagreb',
             temperature: 35,
             icon: '01d.png',
+            price: 44.99,
             
           },
           {
             name: 'Stockholm',
             temperature: 33,
             icon: '01d.png',
+            price: 36.99,
             
           },
           {
             name: 'Warsaw',
             temperature: 25,
             icon: '01d.png',
+            price: 120.99,
             
           },
           {
             name: 'London',
             temperature: 22,
             icon: '01d.png',
+            price: 60.99,
             
           },
           {
             name: 'Budapest',
             temperature: 19,
             icon: '01d.png',
+            price: 33.99,
             
           },
           {
             name: 'Helsinki',
             temperature: 15,
             icon: '01d.png',
+            price: 49.88,
             
           },
-        ],
-      }
-    }
-    ,
-    methods: {
-      getColor (temperature) {
-        if (temperature > 35) return 'red'
-        else if (temperature > 20) return 'orange'
-        else return 'green'
-      }
-    },
-       computed: {
-      computedDateFormattedMomentjs () {
-        return this.date ? moment(this.date).format('dddd, MMMM Do YYYY') : ''
+        ]
       },
-      computedDateFormattedDatefns () {
-        return this.date ? format(parseISO(this.date), 'EEEE, MMMM do yyyy') : ''
+
+      selectItem (item) {
+        this.editedIndex = this.flightDestinations.indexOf(item)
+        this.selectedItem = Object.assign({}, item)
+        this.dialog = true
+      },
+
+      
+
+      
+
+      close () {
+        this.dialog = false
+        this.$nextTick(() => {
+          this.selectedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      closeDelete () {
+        this.dialogDelete = false
+        this.$nextTick(() => {
+          this.selectedItem = Object.assign({}, this.defaultItem)
+          this.editedIndex = -1
+        })
+      },
+
+      select () {
+        if (this.editedIndex > -1) {
+          Object.assign(this.flightDestinations[this.editedIndex], this.selectedItem)
+        } else {
+          this.flightDestinations.push(this.selectedItem)
+        }
+        this.close()
       },
     },
   }
-  
-
 </script>
-
-<style>
-  .x {
-    background-color: black;
-  }
-</style>

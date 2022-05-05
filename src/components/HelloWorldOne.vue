@@ -84,7 +84,7 @@
                   max-width="290"
                 >
                 <template v-slot:activator="{ on, attrs }">
-                  <v-text-field
+                  <div-field
                     :value="computedDateFormattedMomentjs"
                     clearable
                     label="Formatted with Moment.js"
@@ -92,7 +92,7 @@
                     v-bind="attrs"
                     v-on="on"
                     @click:clear="date = null"
-                  ></v-text-field>
+                  ></div-field>
               </template>
           <v-date-picker
             v-model="date"
